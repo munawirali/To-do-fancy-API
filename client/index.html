@@ -2,9 +2,73 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Index HTML</title>
+    <title>To Do List Fancy</title>
   </head>
   <body>
-    <h1>Index HTML</h1>
+    <h1>To Do List Fancy</h1>
+    <fb:login-button scope="public_profile,email" onlogin="checkLoginState();"data-auto-logout-link="true">
+    </fb:login-button>
+
+    <!-- <div id="status">
+    </div> -->
   </body>
+  <script
+    src="https://code.jquery.com/jquery-3.1.1.min.js"
+    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+    crossorigin="anonymous"></script>
+  <script type="text/javascript">
+    function statusChangeCallback(response) {
+      console.log('statusChangeCallback');
+      console.log(response);
+
+      if (response.status === 'connected') {
+        $.post('http://localhost:3000/api/login',{
+          accessToken: response.authResponse.accessToken,
+          userId: response.authResponse.userID
+        },function(response){
+          // console.log('token',response);
+          localStorage.setItem('token',response);
+        })
+      } else {
+        // $('.container').hide()
+      }
+    }
+
+    function checkLoginState() {
+      FB.getLoginStatus(function(response) {
+        statusChangeCallback(response);
+      });
+    }
+
+    window.fbAsyncInit = function() {
+    FB.init({
+      appId      : 178711819350175,
+      cookie     : true,  // enable cookies to allow the server to access
+                          // the session
+      xfbml      : true,  // parse social plugins on this page
+      version    : 'v2.8' // use graph api version 2.8
+    });
+    FB.getLoginStatus(function(response) {
+        statusChangeCallback(response);
+      });
+    };
+
+    // Load the SDK asynchronously
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    // function testAPI() {
+    //   console.log('Welcome!  Fetching your information.... ');
+    //   FB.api('/me', function(response) {
+    //     console.log('Successful login for: ' + response.name);
+    //     document.getElementById('status').innerHTML =
+    //       'Thanks for logging in, ' + response.name + '!';
+    //   });
+    // }
+  </script>
 </html>
