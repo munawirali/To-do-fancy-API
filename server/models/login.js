@@ -10,15 +10,16 @@ class Login {
         appSecret: process.env.FBAPPSECRET
       })
 
-      fb.api(body.userId, function(response){
+      // fb.api(body.userId, function(response){
+      fb.api('me',{fields:['id','name','email','picture.type(large)'],access_token:body.accessToken},function(response){
+
         if (response.error) {
-          reject(error);
+          reject(response.error);
         } else {
           let token = jwt.sign({
             id: response.id,
-            name: response.name
-          },process.env.APPSECRET);
-          resolve(token)
+          },process.env.APPSECRET);          
+          resolve({token:token,profil:response.picture.data.url,name:response.name})
         }
       })
     })
