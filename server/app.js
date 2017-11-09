@@ -15,8 +15,10 @@ app.get('/', (req,res,nex)=>{
 })
 
 const login = require('./routes/login');
+const todo = require('./routes/todo');
 
 app.use('/api/login',login);
+app.use('/api/todo',todo);
 
 app.listen(process.env.PORT || 3000, ()=>{
   console.log('Listening from port 3000');
